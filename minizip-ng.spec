@@ -1,4 +1,14 @@
+# (tpg) when we are ready to ditch zlib
+# please remove -DMZ_COMPAT=OFF
+
 %global optflags %{optflags} -O3
+
+# (tpg) enable PGO build
+%ifnarch riscv64
+%bcond_without pgo
+%else
+%bcond_with pgo
+%endif
 
 %define major 3
 %define libname %mklibname %{name} %{major}
@@ -14,7 +24,7 @@ Url:		https://github.com/zlib-ng/minizip-ng
 Source0:	https://github.com/zlib-ng/minizip-ng/archive/%{version}/%{name}-%{version}.tar.gz
 BuildRequires:	cmake
 BuildRequires:	ninja
-BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(zlib-ng)
 BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	pkgconfig(libzstd)
 BuildRequires:	pkgconfig(liblzma)
@@ -43,7 +53,38 @@ Developemt files and headers for %{name}.
 %autosetup -p1
 
 %build
+%if %{with pgo}
+CFLAGS="%{optflags} -fprofile-instr-generate"
+CXXFLAGS="%{optflags} -fprofile-instr-generate"
+FFLAGS="$CFLAGS"
+FCFLAGS="$CFLAGS"
+LDFLAGS="%{build_ldflags} -fprofile-instr-generate"
+export LLVM_PROFILE_FILE=%{name}-%p.profile.d
+export LD_LIBRARY_PATH="$(pwd)"
+
 %cmake \
+    -DMZ_BUILD_TESTS=ON \
+    -DMZ_COMPAT=OFF \
+    -G Ninja
+
+%ninja_build
+
+LD_PRELOAD=./libminizip.so ./test_cmd
+
+unset LD_LIBRARY_PATH
+unset LLVM_PROFILE_FILE
+llvm-profdata merge --output=../%{name}.profile *.profile.d
+rm -f *.profile.d
+ninja clean
+cd ..
+rm -rf build
+
+CFLAGS="%{optflags} -fprofile-instr-use=$(realpath %{name}.profile)" \
+CXXFLAGS="%{optflags} -fprofile-instr-use=$(realpath %{name}.profile)" \
+LDFLAGS="%{ldflags} -fprofile-instr-use=$(realpath %{name}.profile)" \
+%endif
+%cmake \
+    -DMZ_COMPAT=OFF \
     -G Ninja
 
 %ninja_build
