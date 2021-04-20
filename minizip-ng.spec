@@ -1,8 +1,3 @@
-# when building for old (pre 4.3) releases,
-# set bcond_with replace_zlib
-# to avoid replacing traditional zlib
-%bcond_without replace_zlib
-
 %global optflags %{optflags} -O3
 
 # (tpg) enable PGO build
@@ -24,13 +19,11 @@ License:	zlib
 Group:		System/Libraries
 Url:		https://github.com/zlib-ng/minizip-ng
 Source0:	https://github.com/zlib-ng/minizip-ng/archive/%{version}/%{name}-%{version}.tar.gz
+Patch0:		minizip-ng-dont-use-zlib-and-zlib-ng-at-the-same-time.patch
 BuildRequires:	cmake
 BuildRequires:	ninja
-%if %{with replace_zlib}
 BuildRequires:	pkgconfig(zlib)
-%else
 BuildRequires:	pkgconfig(zlib-ng)
-%endif
 BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	pkgconfig(libzstd)
 BuildRequires:	pkgconfig(liblzma)
@@ -51,9 +44,6 @@ Group:		System.Libraries
 Summary:	Development files for %{name}
 Group:		Development/C
 Requires:	%{libname} = %{EVRD}
-%if %{with replace_zlib}
-%rename minizip-devel
-%endif
 
 %description -n %{develname}
 Developemt files and headers for %{name}.
@@ -73,9 +63,7 @@ export LD_LIBRARY_PATH="$(pwd)"
 
 %cmake \
     -DMZ_BUILD_TESTS=ON \
-%if %{without replace_zlib}
-    -DMZ_COMPAT=OFF \
-%endif
+    -DMZ_COMPAT:BOOL=ON \
     -G Ninja
 
 %ninja_build
@@ -95,9 +83,7 @@ CXXFLAGS="%{optflags} -fprofile-instr-use=$(realpath %{name}.profile)" \
 LDFLAGS="%{ldflags} -fprofile-instr-use=$(realpath %{name}.profile)" \
 %endif
 %cmake \
-%if %{without replace_zlib}
-    -DMZ_COMPAT=OFF \
-%endif
+    -DMZ_COMPAT:BOOL=ON \
     -G Ninja
 
 %ninja_build
