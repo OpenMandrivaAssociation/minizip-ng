@@ -51,6 +51,8 @@ Developemt files and headers for %{name}.
 %prep
 %autosetup -p1
 
+ls -l %{_libdir}/libz*
+
 %build
 %if %{with pgo}
 CFLAGS="%{optflags} -fprofile-instr-generate"
