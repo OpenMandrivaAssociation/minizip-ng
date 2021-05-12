@@ -13,15 +13,13 @@
 
 Summary:	Zip manipulation library
 Name:		minizip-ng
-Version:	3.0.1
-Release:	5
+Version:	3.0.2
+Release:	1
 License:	zlib
 Group:		System/Libraries
 Url:		https://github.com/zlib-ng/minizip-ng
 Source0:	https://github.com/zlib-ng/minizip-ng/archive/%{version}/%{name}-%{version}.tar.gz
 Patch0:		minizip-ng-dont-use-zlib-and-zlib-ng-at-the-same-time.patch
-# https://github.com/zlib-ng/minizip-ng/issues/566
-Patch1:		https://github.com/zlib-ng/minizip-ng/commit/8847f22979f76e53bf55c802a1cd26f8edd6a326.patch
 BuildRequires:	cmake
 BuildRequires:	ninja
 BuildRequires:	pkgconfig(zlib)
