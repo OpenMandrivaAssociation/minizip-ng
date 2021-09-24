@@ -2,7 +2,7 @@
 
 # (tpg) enable PGO build
 %ifnarch riscv64
-%bcond_without pgo
+%bcond_with pgo
 %else
 %bcond_with pgo
 %endif
@@ -13,7 +13,7 @@
 
 Summary:	Zip manipulation library
 Name:		minizip-ng
-Version:	3.0.2
+Version:	3.0.3
 Release:	1
 License:	zlib
 Group:		System/Libraries
@@ -34,7 +34,7 @@ minizip-ng is a zip manipulation library written in C
 that is supported on Windows, macOS, and Linux.
 
 %package -n %{libname}
-Summary:	%{symmary}
+Summary:	%{summary}
 Group:		System.Libraries
 
 %description -n %{libname}
