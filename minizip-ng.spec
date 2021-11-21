@@ -2,7 +2,7 @@
 
 # (tpg) enable PGO build
 %ifnarch riscv64
-%bcond_with pgo
+%bcond_without pgo
 %else
 %bcond_with pgo
 %endif
@@ -14,7 +14,7 @@
 Summary:	Zip manipulation library
 Name:		minizip-ng
 Version:	3.0.3
-Release:	1
+Release:	2
 License:	zlib
 Group:		System/Libraries
 Url:		https://github.com/zlib-ng/minizip-ng
@@ -53,14 +53,13 @@ Developemt files and headers for %{name}.
 
 %build
 %if %{with pgo}
-CFLAGS="%{optflags} -fprofile-instr-generate"
-CXXFLAGS="%{optflags} -fprofile-instr-generate"
-FFLAGS="$CFLAGS"
-FCFLAGS="$CFLAGS"
-LDFLAGS="%{build_ldflags} -fprofile-instr-generate"
-export LLVM_PROFILE_FILE=%{name}-%p.profile.d
 export LD_LIBRARY_PATH="$(pwd)"
 
+CFLAGS="%{optflags} -fprofile-generate" \
+CXXFLAGS="%{optflags} -fprofile-generate" \
+FFLAGS="$CFLAGS" \
+FCFLAGS="$CFLAGS" \
+LDFLAGS="%{build_ldflags} -fprofile-instr-generate" \
 %cmake \
     -DMZ_BUILD_TESTS=ON \
     -DMZ_COMPAT:BOOL=ON \
@@ -71,16 +70,16 @@ export LD_LIBRARY_PATH="$(pwd)"
 LD_PRELOAD=./libminizip.so ./test_cmd
 
 unset LD_LIBRARY_PATH
-unset LLVM_PROFILE_FILE
-llvm-profdata merge --output=../%{name}.profile *.profile.d
-rm -f *.profile.d
+llvm-profdata merge --output=../%{name}-llvm.profdata *.profraw
+PROFDATA="$(realpath ../%{name}-llvm.profdata)"
+rm -rf *.profraw
 ninja clean
 cd ..
 rm -rf build
 
-CFLAGS="%{optflags} -fprofile-instr-use=$(realpath %{name}.profile)" \
-CXXFLAGS="%{optflags} -fprofile-instr-use=$(realpath %{name}.profile)" \
-LDFLAGS="%{ldflags} -fprofile-instr-use=$(realpath %{name}.profile)" \
+CFLAGS="%{optflags} -fprofile-use=$PROFDATA" \
+CXXFLAGS="%{optflags} -fprofile-use=$PROFDATA" \
+LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA" \
 %endif
 %cmake \
     -DMZ_COMPAT:BOOL=ON \
