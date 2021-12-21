@@ -1,11 +1,7 @@
 %global optflags %{optflags} -O3
 
 # (tpg) enable PGO build
-%ifnarch riscv64
 %bcond_without pgo
-%else
-%bcond_with pgo
-%endif
 
 %define major 3
 %define libname %mklibname %{name} %{major}
@@ -14,7 +10,7 @@
 Summary:	Zip manipulation library
 Name:		minizip-ng
 Version:	3.0.3
-Release:	2
+Release:	3
 License:	zlib
 Group:		System/Libraries
 Url:		https://github.com/zlib-ng/minizip-ng
@@ -70,7 +66,7 @@ LDFLAGS="%{build_ldflags} -fprofile-instr-generate" \
 LD_PRELOAD=./libminizip.so ./test_cmd
 
 unset LD_LIBRARY_PATH
-llvm-profdata merge --output=../%{name}-llvm.profdata *.profraw
+llvm-profdata merge --output=../%{name}-llvm.profdata $(find . -name "*.profraw" -type f)
 PROFDATA="$(realpath ../%{name}-llvm.profdata)"
 rm -rf *.profraw
 ninja clean
