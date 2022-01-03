@@ -9,8 +9,8 @@
 
 Summary:	Zip manipulation library
 Name:		minizip-ng
-Version:	3.0.3
-Release:	3
+Version:	3.0.4
+Release:	1
 License:	zlib
 Group:		System/Libraries
 Url:		https://github.com/zlib-ng/minizip-ng
