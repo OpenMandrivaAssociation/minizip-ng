@@ -9,16 +9,14 @@
 
 Summary:	Zip manipulation library
 Name:		minizip-ng
-Version:	3.0.4
+Version:	3.0.5
 Release:	1
 License:	zlib
 Group:		System/Libraries
 Url:		https://github.com/zlib-ng/minizip-ng
 Source0:	https://github.com/zlib-ng/minizip-ng/archive/%{version}/%{name}-%{version}.tar.gz
-Patch0:		minizip-ng-dont-use-zlib-and-zlib-ng-at-the-same-time.patch
 BuildRequires:	cmake
 BuildRequires:	ninja
-BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(zlib-ng)
 BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	pkgconfig(libzstd)
@@ -55,10 +53,9 @@ CFLAGS="%{optflags} -fprofile-generate" \
 CXXFLAGS="%{optflags} -fprofile-generate" \
 FFLAGS="$CFLAGS" \
 FCFLAGS="$CFLAGS" \
-LDFLAGS="%{build_ldflags} -fprofile-instr-generate" \
+LDFLAGS="%{build_ldflags} -fprofile-generate" \
 %cmake \
     -DMZ_BUILD_TESTS=ON \
-    -DMZ_COMPAT:BOOL=ON \
     -G Ninja
 
 %ninja_build
@@ -78,7 +75,6 @@ CXXFLAGS="%{optflags} -fprofile-use=$PROFDATA" \
 LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA" \
 %endif
 %cmake \
-    -DMZ_COMPAT:BOOL=ON \
     -DINSTALL_INC_DIR:PATH=%{_includedir}/minizip \
     -G Ninja
 
