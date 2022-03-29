@@ -1,3 +1,6 @@
+# (tpg) filter wrong requires
+%global __requires_exclude ^.*cmake\\(zlibng\\).*$
+
 %global optflags %{optflags} -O3
 
 # (tpg) enable PGO build
@@ -10,7 +13,7 @@
 Summary:	Zip manipulation library
 Name:		minizip-ng
 Version:	3.0.5
-Release:	1
+Release:	2
 License:	zlib
 Group:		System/Libraries
 Url:		https://github.com/zlib-ng/minizip-ng
@@ -38,6 +41,7 @@ Group:		System.Libraries
 Summary:	Development files for %{name}
 Group:		Development/C
 Requires:	%{libname} = %{EVRD}
+Requires:	pkgconfig(zlib-ng)
 
 %description -n %{develname}
 Developemt files and headers for %{name}.
