@@ -12,7 +12,7 @@
 
 Summary:	Zip manipulation library
 Name:		minizip-ng
-Version:	3.0.6
+Version:	3.0.7
 Release:	1
 License:	zlib
 Group:		System/Libraries
@@ -64,7 +64,9 @@ LDFLAGS="%{build_ldflags} -fprofile-generate" \
 
 %ninja_build
 
-LD_PRELOAD=./libminizip.so ./test_cmd
+LD_PRELOAD=./libminizip.so ./minigzip -9 minizip
+LD_PRELOAD=./libminizip.so ./minigzip -d minizip.gz
+LD_PRELOAD=./libminizip.so ./minizip test.zip minizip minigzip
 
 unset LD_LIBRARY_PATH
 llvm-profdata merge --output=../%{name}-llvm.profdata $(find . -name "*.profraw" -type f)
