@@ -6,13 +6,13 @@
 # (tpg) enable PGO build
 %bcond_without pgo
 
-%define major 3
-%define libname %mklibname %{name} %{major}
+%define major 4
+%define libname %mklibname %{name}
 %define develname %mklibname %{name} -d
 
 Summary:	Zip manipulation library
 Name:		minizip-ng
-Version:	3.0.10
+Version:	4.0.0
 Release:	1
 License:	zlib
 Group:		System/Libraries
@@ -97,7 +97,6 @@ ln -s mz_compat.h %{buildroot}%{_includedir}/minizip/ioapi.h
 
 %files -n %{develname}
 %{_includedir}/minizip
-%dir %{_libdir}/cmake/minizip
-%{_libdir}/cmake/minizip/*.cmake
 %{_libdir}/libminizip.so
 %{_libdir}/pkgconfig/minizip.pc
+%{_libdir}/cmake/*
