@@ -1,0 +1,12 @@
+diff -up minizip-ng-4.0.1/CMakeLists.txt.omv~ minizip-ng-4.0.1/CMakeLists.txt
+--- minizip-ng-4.0.1/CMakeLists.txt.omv~	2023-08-05 15:08:34.115559176 +0200
++++ minizip-ng-4.0.1/CMakeLists.txt	2023-08-05 15:08:43.311670527 +0200
+@@ -612,7 +612,7 @@ endif()
+ 
+ # Include compatibility layer
+ if(MZ_COMPAT)
+-    set(SOVERSION "1")
++	#    set(SOVERSION "1")
+ 
+     set(FILE_H "zip.h")
+     set(MZ_COMPAT_FILE "MZ_COMPAT_ZIP")

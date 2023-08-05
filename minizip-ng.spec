@@ -13,11 +13,14 @@
 Summary:	Zip manipulation library
 Name:		minizip-ng
 Version:	4.0.1
-Release:	1
+Release:	2
 License:	zlib
 Group:		System/Libraries
 Url:		https://github.com/zlib-ng/minizip-ng
 Source0:	https://github.com/zlib-ng/minizip-ng/archive/%{version}/%{name}-%{version}.tar.gz
+# Restore SOVERION 4 for binary compatibility with 4.0.0
+# rather than pretending we have minizip non-ng's soversion
+Patch0:		minizip-ng-keep-soversion-at-4.patch
 BuildRequires:	cmake
 BuildRequires:	ninja
 BuildRequires:	pkgconfig(zlib-ng)
@@ -32,7 +35,12 @@ that is supported on Windows, macOS, and Linux.
 
 %package -n %{libname}
 Summary:	%{summary}
-Group:		System.Libraries
+Group:		System/Libraries
+%if "%{_lib}" == "lib64"
+Provides:	libminizip.so.1()(64bit)
+%else
+Provides:	libminizip.so.1
+%endif
 
 %description -n %{libname}
 %{description}
@@ -91,6 +99,8 @@ LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA" \
 
 # For compatibilibty with old minizip
 ln -s mz_compat.h %{buildroot}%{_includedir}/minizip/ioapi.h
+# Binary compatibility with non-ng minizip
+ln -s libminizip.so.%{version} %{buildroot}%{_libdir}/libminizip.so.1
 
 %files -n %{libname}
 %{_libdir}/libminizip.so.%{major}*
