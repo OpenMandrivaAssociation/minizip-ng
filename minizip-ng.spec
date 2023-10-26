@@ -12,8 +12,8 @@
 
 Summary:	Zip manipulation library
 Name:		minizip-ng
-Version:	4.0.1
-Release:	2
+Version:	4.0.2
+Release:	1
 License:	zlib
 Group:		System/Libraries
 Url:		https://github.com/zlib-ng/minizip-ng
@@ -97,8 +97,6 @@ LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA" \
 %install
 %ninja_install -C build
 
-# For compatibilibty with old minizip
-ln -s mz_compat.h %{buildroot}%{_includedir}/minizip/ioapi.h
 # Binary compatibility with non-ng minizip
 ln -s libminizip.so.%{version} %{buildroot}%{_libdir}/libminizip.so.1
 
