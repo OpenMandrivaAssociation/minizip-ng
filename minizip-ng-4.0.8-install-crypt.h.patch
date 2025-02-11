@@ -1,0 +1,11 @@
+diff -up minizip-ng-4.0.8/CMakeLists.txt.omv~ minizip-ng-4.0.8/CMakeLists.txt
+--- minizip-ng-4.0.8/CMakeLists.txt.omv~	2025-02-11 01:11:27.927106141 +0100
++++ minizip-ng-4.0.8/CMakeLists.txt	2025-02-11 01:11:40.991564482 +0100
+@@ -622,6 +622,7 @@ if(MZ_COMPAT)
+         compat/unzip.c
+         compat/zip.c)
+     list(APPEND MINIZIP_HDR 
++        compat/crypt.h
+         compat/ioapi.h
+         compat/unzip.h
+         compat/zip.h)
