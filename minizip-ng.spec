@@ -12,7 +12,7 @@
 
 Summary:	Zip manipulation library
 Name:		minizip-ng
-Version:	4.0.9
+Version:	4.0.10
 Release:	1
 License:	zlib
 Group:		System/Libraries
