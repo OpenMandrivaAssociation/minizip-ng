@@ -18,6 +18,7 @@ License:	zlib
 Group:		System/Libraries
 Url:		https://github.com/zlib-ng/minizip-ng
 Source0:	https://github.com/zlib-ng/minizip-ng/archive/%{version}/%{name}-%{version}.tar.gz
+Source1:	https://github.com/ip7z/7zip/releases/download/26.00/7z2600-src.tar.xz
 # Restore SOVERION 4 for binary compatibility with 4.0.0
 # rather than pretending we have minizip non-ng's soversion
 Patch0:		minizip-ng-keep-soversion-at-4.patch
@@ -55,7 +56,8 @@ Requires:	pkgconfig(zlib-ng)
 Developemt files and headers for %{name}.
 
 %prep
-%autosetup -p1
+%autosetup -p1 -a1
+sed -i -e 's,clone_repo,#clone_repo,g' CMakeLists.txt
 
 %build
 %if %{with pgo}
@@ -68,6 +70,7 @@ FCFLAGS="$CFLAGS" \
 LDFLAGS="%{build_ldflags} -fprofile-generate" \
 %cmake \
     -DMZ_BUILD_TESTS=ON \
+    -DPPMD_SOURCE_DIR=$(pwd)/.. \
     -G Ninja
 
 %ninja_build
@@ -90,6 +93,7 @@ LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA" \
 %endif
 %cmake \
     -DINSTALL_INC_DIR:PATH=%{_includedir}/minizip \
+    -DPPMD_SOURCE_DIR=$(pwd)/.. \
     -G Ninja
 
 %ninja_build
