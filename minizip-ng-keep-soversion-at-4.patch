@@ -1,12 +1,12 @@
-diff -up minizip-ng-4.0.8/CMakeLists.txt.1~ minizip-ng-4.0.8/CMakeLists.txt
---- minizip-ng-4.0.8/CMakeLists.txt.1~	2025-02-11 01:07:54.169073400 +0100
-+++ minizip-ng-4.0.8/CMakeLists.txt	2025-02-11 01:08:24.477797223 +0100
-@@ -615,7 +615,7 @@ endif()
+diff -up minizip-ng-4.1.2/CMakeLists.txt.1~ minizip-ng-4.1.2/CMakeLists.txt
+--- minizip-ng-4.1.2/CMakeLists.txt.1~	2026-04-25 07:50:35.000000000 +0200
++++ minizip-ng-4.1.2/CMakeLists.txt	2026-04-25 17:33:12.123171702 +0200
+@@ -671,7 +671,7 @@ endif()
  
  # Include compatibility layer
  if(MZ_COMPAT)
 -    set(SOVERSION "1")
 +    #set(SOVERSION "1")
  
-     list(APPEND MINIZIP_SRC 
+     list(APPEND MINIZIP_SRC
          compat/ioapi.c
