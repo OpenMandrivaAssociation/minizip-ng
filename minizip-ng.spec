@@ -104,6 +104,9 @@ LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA" \
 # Binary compatibility with non-ng minizip
 ln -s libminizip.so.%{version} %{buildroot}%{_libdir}/libminizip.so.1
 
+# There is no PPMD cmake file
+sed -i -e '/find_dependency(PPMD)/d' %{buildroot}%{_libdir}/cmake/minizip/minizip-config.cmake
+
 %files -n %{libname}
 %{_libdir}/libminizip.so.%{major}*
 %{_libdir}/libminizip.so.1
