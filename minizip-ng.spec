@@ -12,13 +12,13 @@
 
 Summary:	Zip manipulation library
 Name:		minizip-ng
-Version:	4.1.2
-Release:	2
+Version:	4.2.2
+Release:	1
 License:	zlib
 Group:		System/Libraries
 Url:		https://github.com/zlib-ng/minizip-ng
 Source0:	https://github.com/zlib-ng/minizip-ng/archive/%{version}/%{name}-%{version}.tar.gz
-Source1:	https://github.com/ip7z/7zip/releases/download/26.00/7z2600-src.tar.xz
+Source1:	https://github.com/ip7z/7zip/releases/download/26.02/7z2602-src.tar.xz
 # Restore SOVERION 4 for binary compatibility with 4.0.0
 # rather than pretending we have minizip non-ng's soversion
 Patch0:		minizip-ng-keep-soversion-at-4.patch
